@@ -20,7 +20,7 @@
           ></el-input>
         </el-form-item>
         <!-- 密码 -->
-        <el-form-item prop="username">
+        <el-form-item prop="password">
           <el-input
             placeholder="请输入密码"
             type="password"
@@ -61,7 +61,9 @@ export default {
     };
   },
   methods: {
-    login: function(event) {
+    login: function(isWaiting) {
+      console.log("====>" + isWaiting);
+
       //预校验
       this.$refs.loginFormRef.validate(valid => {
         if (!valid) {
@@ -74,20 +76,30 @@ export default {
           //   .post("login", this.loginForm)
           //   .then(resp => console.log(resp)) //获取数据，进行处理
           //   .catch(error => console.log(error)); //异常处理
-          this.axiosfun();
+          console.log("=====>");
+          this.axiosfun(isWaiting);
         }
       });
     },
     register: function() {
-    //todo:跳转至注册界面
+      //todo:跳转至注册界面
       alert("注册成功");
     },
     //es7处理异步
-    async axiosfun() {
-      var { data: res, head: xxx } = await this.$axios.post(
-        "login",
-        this.loginForm
-      ); //解构赋值写法，好东西。。
+    async axiosfun(data) {
+      //解构赋值写法，好东西。。
+      try {
+        var { data: res, head: xxx } = await this.$axios.post(
+          "login",
+          this.loginForm
+        );
+      }catch(e){
+        console.log(e)
+        data.isWaiting = false;
+        return;
+      }
+
+      data.isWaiting = false;
       console.log("es7处理异步----------");
       // console.log(res);
       //弹框提示
