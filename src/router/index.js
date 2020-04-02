@@ -30,7 +30,7 @@ const router = new VueRouter({
   routes
 })
 
-//导航首位
+//导航守卫
 router.beforeEach((to, from, next) => {
   if (to.path === '/login') {
     return next();

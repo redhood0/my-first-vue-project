@@ -30,7 +30,7 @@
         </el-form-item>
         <!-- 按钮 -->
         <el-form-item class="btns">
-          <el-button class="button" type="primary" @click="login">登录</el-button>
+          <el-button class="button" type="primary" v-throttle="{fun:login,time:2000}">登录</el-button>
           <el-button class="button" type="info" @click="register">注册</el-button>
         </el-form-item>
       </el-form>
@@ -61,24 +61,25 @@ export default {
     };
   },
   methods: {
-    login: function() {
+    login: function(event) {
       //预校验
       this.$refs.loginFormRef.validate(valid => {
         if (!valid) {
-          console.log("bad");
+          // console.log(event.target.disabled);
+          // event.target.disabled = true;
+          console.log(">>>>login input invalidate>>>");
           return;
         } else {
-          this.$axios
-            .post("login", this.loginForm)
-            .then(resp => console.log(resp)) //获取数据，进行处理
-            .catch(error => console.log(error)); //异常处理
-
+          // this.$axios
+          //   .post("login", this.loginForm)
+          //   .then(resp => console.log(resp)) //获取数据，进行处理
+          //   .catch(error => console.log(error)); //异常处理
           this.axiosfun();
         }
       });
     },
     register: function() {
-      //todo:跳转至注册界面
+    //todo:跳转至注册界面
       alert("注册成功");
     },
     //es7处理异步
@@ -88,12 +89,12 @@ export default {
         this.loginForm
       ); //解构赋值写法，好东西。。
       console.log("es7处理异步----------");
-      console.log(res);
+      // console.log(res);
       //弹框提示
       this.$message.success("登陆成功");
       //路由跳转，数据通过路由进行传递
-      window.sessionStorage.setItem("token",res.token);
-      this.$router.push('/home');
+      window.sessionStorage.setItem("token", res.token);
+      this.$router.push("/home");
     }
   }
 };
