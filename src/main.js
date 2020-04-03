@@ -8,6 +8,11 @@ import axios from 'axios'
 import vThrottle from './plugins/vThrottel'
 //配置请求根路径
 axios.defaults.baseURL='https://www.fastmock.site/mock/4b98738af04e18409d8d542dbf010bfd/firstvue';
+//axios拦截器
+axios.interceptors.request.use(config=>{
+  config.headers.Authorization = window.sessionStorage.getItem("token");
+  return config;
+})
 
 Vue.prototype.$axios = axios;
 Vue.config.productionTip = false;
